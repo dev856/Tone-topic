@@ -1,0 +1,3 @@
+system:index,basin_name,mean_evapotranspiration,mean_precipitation,mean_runoff,.geo
+0,Ganga,<Image<[mean_evapotranspiration]>>,<Image<[mean_precipitation]>>,<Image<[mean_runoff]>>,"{""type"":""Polygon"",""coordinates"":[[[72.75,33.49999999999999],[73.25,33.49999999999999],[73.25,34.0],[72.75,34.0],[72.75,33.49999999999999]]]}"
+1,Yamuna,<Image<[mean_evapotranspiration]>>,<Image<[mean_precipitation]>>,<Image<[mean_runoff]>>,"{""type"":""Polygon"",""coordinates"":[[[77.25,27.0],[77.75,27.0],[77.75,27.499999999999996],[77.25,27.499999999999996],[77.25,27.0]]]}"
