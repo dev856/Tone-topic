@@ -1,16 +1,16 @@
+#Importing necessary libraries
 import streamlit as st
 import gensim
 from gensim import corpora, models
 import re
 import heapq
-import whisper
 import os
 import shutil
 import pandas as pd
-#from annotated_text import annotated_text
+
 #list of topics based on industries
 
-insurance = ['actuary', 'claims', 'coverage', 'deductible', 'policyholder', 'premium', 'underwriter', 'risk assessment', 'insurable interest', 'loss ratio', 'reinsurance', 'actuarial tables', 'property damage', 'liability', 'flood insurance', 'term life insurance', 'whole life insurance', 'health insurance', 'auto insurance', 'homeowners insurance', 'marine insurance', 'crop insurance', 'catastrophe insurance', 'umbrella insurance', 'pet insurance', 'travel insurance', 'professional liability insurance', 'disability insurance', 'long-term care insurance', 'annuity', 'pension plan', 'group insurance', 'insurtech', 'insured', 'insurer', 'subrogation', 'adjuster', 'third-party administrator', 'excess and surplus lines', 'captives', 'workers compensation', 'insurance fraud', 'health savings account', 'health maintenance organization', 'preferred provider organization','annuitant', 'beneficiary', 'peril', 'actuarial modeling', 'catastrophe modeling', 'reinsurance treaty', 'facultative reinsurance', 'health maintenance organization', 'indemnity', 'reinsurance broker', 'risk management', 'self-insurance','surplus lines', 'policy limit', 'policy term']
+insurance = ['actuary', 'claims', 'coverage', 'deductible', 'policyholder', 'underwriter', 'risk assessment', 'insurable interest', 'loss ratio', 'reinsurance', 'actuarial tables', 'property damage', 'liability', 'flood insurance', 'term life insurance', 'whole life insurance', 'health insurance', 'auto insurance', 'homeowners insurance', 'marine insurance', 'crop insurance', 'catastrophe insurance', 'umbrella insurance', 'pet insurance', 'travel insurance', 'professional liability insurance', 'disability insurance', 'long-term care insurance', 'annuity', 'pension plan', 'group insurance', 'insurtech', 'insured', 'insurer', 'subrogation', 'adjuster', 'third-party administrator', 'excess and surplus lines', 'captives', 'workers compensation', 'insurance fraud', 'health savings account', 'health maintenance organization', 'preferred provider organization','annuitant', 'beneficiary', 'peril', 'actuarial modeling', 'catastrophe modeling', 'reinsurance treaty', 'facultative reinsurance', 'health maintenance organization', 'indemnity', 'reinsurance broker', 'risk management', 'self-insurance','surplus lines', 'policy limit', 'policy term']
 
 finance = ['asset', 'liability', 'equity', 'capital', 'portfolio', 'dividend', 'financial statement', 'balance sheet', 'income statement', 'cash flow statement', 'statement of retained earnings', 'financial ratio', 'valuation', 'bond', 'stock', 'mutual fund', 'exchange-traded fund', 'hedge fund', 'private equity', 'venture capital', 'mergers and acquisitions', 'initial public offering', 'secondary market', 'primary market', 'securities', 'derivative', 'option', 'futures', 'forward contract', 'swaps', 'commodities', 'credit rating', 'credit score', 'credit report', 'credit bureau', 'credit history', 'credit limit', 'credit utilization', 'credit counseling', 'credit card', 'debit card', 'ATM', 'bankruptcy', 'foreclosure', 'debt consolidation', 'taxes', 'tax return', 'tax deduction', 'tax credit', 'tax bracket', 'taxable income','asset allocation', 'capital gain', 'dividend yield', 'financial planner', 'hedge fund manager', 'liquidity', 'market risk', 'price-to-earnings ratio', 'return on investment', 'shareholder equity', 'tax exemption', 'value investing', 'working capital']
 
@@ -77,18 +77,13 @@ def label_to(text):
 
 def topic_modeling(text_trans, num_topics=4, num_words=10):
     # Preprocessing the transcript text
-    
     preprocessed_text = prepro_text(text_trans)
-
     # Here we are creating a dictionary of all unique words in the transcripts
     dictio = corpora.Dictionary(preprocessed_text)
-
     # Afte that we are converting  the preprocessed transcripts into a bag-of-words representation
     corpus = [dictio.doc2bow(text) for text in preprocessed_text]
-
     # here we are training an LDA model with the specified number of topics
     lda = models.LdaModel(corpus=corpus, id2word=dictio, num_topics=num_topics)
-
     # here we are extracting the most probable words for each topic
     topics = []
     for i, topic in lda.print_topics(-1, num_words=num_words):
@@ -98,12 +93,11 @@ def topic_modeling(text_trans, num_topics=4, num_words=10):
     return topics
 
 def prepro_text(text):
-    
-    # This code simply tokenizes the text and removes stop words
+    # This code will simply tokenizes the text and removes stop words
+    #it performs the prpeproicessing on the text
     tokens = gensim.utils.simple_preprocess(text)
     stop_words = gensim.parsing.preprocessing.STOPWORDS
     preprocessed_text = [[token for token in tokens if token not in stop_words]]
-
     return preprocessed_text
 
 st.set_page_config(layout="wide")
@@ -114,7 +108,7 @@ choice = st.sidebar.selectbox("Select the input file type", ["Text","CSV"])
 if choice == "Text":
     
     st.subheader("Tone Topic: Topic Modeling and Labeling in the Streamlit Sea")
-
+    st.write("The program offers a powerful and user-friendly text analysis platform, enabling users to extract important subjects and classify text into predetermined industry sectors. It uses Natural Language Processing (NLP) and topic modelling approaches to identify latent theme patterns in text data. The program is built for versatility, with two basic forms of input: direct text entry and CSV file uploads. This is useful for a variety of applications, ranging from evaluating individual text entries to processing massive data contained in CSV formats.")
     # here we are creating the text area space which allows user to enter the paragraph which they want to label
     text = st.text_area("Enter the text below", height=250)
 
@@ -130,7 +124,7 @@ if choice == "Text":
                 #here we are calling the function topic_modeling 
                 topics = topic_modeling(text)
 
-                # Display the resulting topics in the app
+                # Displaying the resulting topics in the app
                 st.info("Topics")
                 for topic in topics:
                     st.success(f"{topic[0]}: {', '.join(topic[1])}")
