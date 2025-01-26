@@ -28,3 +28,4 @@ Click "Submit" to see the discovered topics and industry labels displayed side b
 CSV File Analysis
 Upload a CSV with a column named “Data” containing your text.
 Click “Submit CSV File” to process multiple rows and automatically assign industries
+![Alt Text](Output.png)
